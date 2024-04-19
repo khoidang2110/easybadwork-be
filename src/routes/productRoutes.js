@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllImages, getAllProducts, getAllStocks, uploadImg, uploadMultiImg } from "../controllers/product/productControllers.js";
+import { getAllImages, getAllProducts, getAllStocks, getProductByCategory, uploadImg, uploadMultiImg } from "../controllers/product/productControllers.js";
 import storage from "../controllers/product/storageControllers.js";
 
 
@@ -16,6 +16,7 @@ productRoutes.post('/upload-multi-images',storage.array('file'),uploadMultiImg);
 productRoutes.get('/get-all-products',getAllProducts);
 productRoutes.get('/get-all-images',getAllImages);
 productRoutes.get('/get-all-stocks',getAllStocks);
+productRoutes.get('/get-products-category/:category_name',getProductByCategory);
 
 
 export default productRoutes;
