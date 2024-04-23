@@ -6,11 +6,16 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-// datasource db {
-//   provider = "postgresql"
-//   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-// }
+
+model bill {
+  bill_id       Int         @id @default(autoincrement())
+  date          DateTime?   @db.Date
+  order_cart_id Int?
+  order_id      Int?
+  order_cart    order_cart? @relation(fields: [order_cart_id], references: [order_cart_id], onDelete: NoAction, onUpdate: NoAction)
+  orders        orders?     @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model category {
   category_id   Int       @id @default(autoincrement())
   category_name String?   @db.VarChar(225)
@@ -24,16 +29,46 @@ model image {
   product    product? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
+model order_cart {
+  order_cart_id Int      @id @default(autoincrement())
+  size          String?  @db.VarChar(225)
+  quantity      Int?
+  order_id      Int?
+  product_id    Int?
+  bill          bill[]
+  orders        orders?  @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  product       product? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model orders {
+  order_id   Int          @id @default(autoincrement())
+  date       DateTime?    @db.Date
+  full_name  String?      @db.VarChar(225)
+  email      String?      @db.VarChar(225)
+  address    String?      @db.VarChar(225)
+  dist       String?      @db.VarChar(225)
+  city       String?      @db.VarChar(225)
+  phone      String?      @db.VarChar(225)
+  note       String?      @db.VarChar(225)
+  payment    String?      @db.VarChar(225)
+  product_id Int?
+  bill       bill[]
+  order_cart order_cart[]
+  product    product?     @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model product {
-  product_id  Int       @id @default(autoincrement())
-  name        String?   @db.VarChar(225)
+  product_id  Int          @id @default(autoincrement())
+  name        String?      @db.VarChar(225)
   price_vnd   Int?
   price_usd   Int?
-  decs_vi     String?   @db.VarChar(225)
-  decs_en     String?   @db.VarChar(225)
+  decs_vi     String?      @db.VarChar(225)
+  decs_en     String?      @db.VarChar(225)
   category_id Int?
   image       image[]
-  category    category? @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  order_cart  order_cart[]
+  orders      orders[]
+  category    category?    @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
   stock       stock[]
 }
 
@@ -43,4 +78,12 @@ model stock {
   stock      Int?
   product_id Int?
   product    product? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id      Int     @id @default(autoincrement())
+  name         String? @db.VarChar(225)
+  phone_number Int?
+  email        String? @db.VarChar(225)
+  password     String? @db.VarChar(225)
 }
