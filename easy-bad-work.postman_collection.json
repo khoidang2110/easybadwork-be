@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "33a34059-6d5f-47ee-8e0e-adc0f47e4bd7",
+		"name": "easy-bad-work",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22947797"
+	},
+	"item": [
+		{
+			"name": "get product by category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/product/get-products-category/tee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"product",
+						"get-products-category",
+						"tee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/image/get-all-images",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"image",
+						"get-all-images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload img",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Khoi/Desktop/366740666_3156702884632584_2018084273224498313_n.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/image/upload-image",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"image",
+						"upload-image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload multi",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": [
+								"/D:/KHIM/HINH/hat/3fire1.jpg",
+								"/D:/KHIM/HINH/hat/3fire2.jpg",
+								"/D:/KHIM/HINH/hat/3fire3.jpg"
+							]
+						},
+						{
+							"key": "product_id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/image/upload-multi-images",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"image",
+						"upload-multi-images"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/product/find-product/sum",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"product",
+						"find-product",
+						"sum"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \"full_name\":\"553\",\r\n       \"email\":\"23\", \r\n       \"address\":\"34\", \r\n   \"cart\": [\r\n            {\r\n\"product_id\":1,\r\n                \"size\": \"S\",\r\n                \"quantity\": 2\r\n            },\r\n             {\r\n\"product_id\":1,\r\n                \"size\": \"M\",\r\n                \"quantity\": 2\r\n            }\r\n        ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/order/create-order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"order",
+						"create-order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all stock",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/stock/get-all-stocks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"stock",
+						"get-all-stocks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bán lẻ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n    \r\n   \"cart\": [\r\n            {\r\n\"product_id\":1,\r\n                \"size\": \"S\",\r\n                \"quantity\": 2\r\n            },\r\n             {\r\n\"product_id\":1,\r\n                \"size\": \"M\",\r\n                \"quantity\": 2\r\n            }\r\n        ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/order/create-order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"order",
+						"create-order"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
