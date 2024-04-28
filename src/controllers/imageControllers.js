@@ -3,9 +3,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const getAllImages = async (req, res) => {
+  let { page, size } = req.query;
+  let num_page = Number(page);
+  let num_size = Number(size);
+  let index = (num_page - 1) * num_size;
     try {
       // Assuming prisma.products represents your product model
-      let products = await prisma.image.findMany();
+      let products = await prisma.image.findMany(
+        {skip:index,
+        take:num_size,}
+      );
     
       if (products.length === 0) {
         res.send("No products found");

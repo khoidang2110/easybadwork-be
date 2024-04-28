@@ -6,8 +6,12 @@ const getProductByCategory = async (req, res) => {
   try {
     // Assuming prisma.products represents your product model
     let { categoryName, page, size } = req.query;
-
+    let num_page = Number(page);
+    let num_size = Number(size);
+    let index = (num_page - 1) * num_size;
     let products = await prisma.product.findMany({
+      skip:index,
+      take:num_size,
       include: {
         category: true,
         image: true,
@@ -54,9 +58,14 @@ const getProductByCategory = async (req, res) => {
 
 const findProductByName = async (req, res) => {
   try {
-    let { keyword } = req.query;
-
+   // let { keyword } = req.query;
+    let { keyword, page, size } = req.query;
+    let num_page = Number(page);
+    let num_size = Number(size);
+    let index = (num_page - 1) * num_size;
     const products = await prisma.product.findMany({
+      skip:index,
+      take:num_size,
       where: {
         name: {
           contains: keyword,

@@ -14,7 +14,7 @@ app.use(rootRoutes);
 
 
 app.get("/",(req,res)=>{
-    res.send("Hello node38 youtube");
+    res.send("easy bad work be");
 })
 
 
