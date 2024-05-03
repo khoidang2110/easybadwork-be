@@ -75,7 +75,7 @@ model stock {
 model users {
   user_id      Int     @id @default(autoincrement())
   name         String? @db.VarChar(225)
-  phone_number Int?
+  phone_number String? @db.VarChar(225)
   email        String? @db.VarChar(225)
   password     String? @db.VarChar(225)
 }

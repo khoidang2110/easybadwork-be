@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-
+import { checkToken } from "../config/jwt.js";
 const prisma = new PrismaClient();
 
 
 const getAllStocks = async (req, res) => {
+  let { token } = req.headers;
+  checkToken(token);
     try {
       // Assuming prisma.products represents your product model
       let products = await prisma.stock.findMany();
@@ -20,6 +22,8 @@ const getAllStocks = async (req, res) => {
 
   //create stock
   const createStock = async (req,res) => {
+    let { token } = req.headers;
+    checkToken(token);
     try {
   
  
@@ -55,6 +59,8 @@ if(findItem.length>0){
   };
   //update stock
   const updateStock = async (req, res) => {
+    let { token } = req.headers;
+    checkToken(token);
     try {
       let { size, stock, product_id } = req.body;
   

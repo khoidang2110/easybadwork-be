@@ -10,11 +10,11 @@ const prisma = new PrismaClient();
 
 const login = async (req, res) => {
   try {
-    let { id, password } = req.body;
+    let { user_id, password } = req.body;
     // check email
     let data = await prisma.users.findUnique({
       where: {
-        id,
+        user_id,
       },
     });
 
@@ -27,11 +27,13 @@ const login = async (req, res) => {
         // tạo token -> jsonwebtoken jwt
         // mã hoá password->bcrypt
         let payload = {
-          id: data.id,
+          user_id: data.user_id,
+          name: data.name,
+          phone_number:data.phone_number,
           email: data.email,
           password: data.password,
-          name: data.name,
-          age: data.age,
+       
+         
         };
         let token = createToken(payload);
         res.status(200).send(token);
@@ -52,11 +54,11 @@ const login = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    let { id, email, password, name, age } = req.body;
+    let { user_id, name, phone_number,email,password } = req.body;
 
     const data = await prisma.users.findUnique({
       where: {
-        id,
+        user_id,
       },
     });
 
@@ -66,11 +68,12 @@ const signUp = async (req, res) => {
       // mã hoá pass
       let encodePassword = bcrypt.hashSync(password, 10);
       let newUser = {
-        id,
-        email,
-        password: encodePassword,
-        name,
-        age,
+       user_id,
+     name,
+     phone_number,
+     email,
+        password: encodePassword
+      
       };
       await prisma.users.create({
         data: newUser,
@@ -82,30 +85,40 @@ const signUp = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  let { id, email, password, name, age } = req.body;
+  let { user_id, name,phone_number,email,password } = req.body;
   let { token } = req.headers;
   let isValidToken = checkToken(token);
   let encodePassword = bcrypt.hashSync(password, 10);
 
-  if (id == Number(isValidToken.data.data.id)) {
+  // isvalidtoken status code 200 là trùng token
+  // 401  là invalid
+//   console.log('isValidToken',isValidToken.statusCode)
+// if(isValidToken.statusCode==401){
+//     res.send("token incorrect");
+// }else 
+if (user_id == Number(isValidToken.data.data.user_id)) {
    const updatedUser =  await prisma.users.update({
       where: {
-        id,
+        user_id,
       },
       data: {
+        name: name ? name : isValidToken.data.data.name,
+        phone_number: phone_number ? phone_number : isValidToken.data.data.phone_number,
         email: email ? email : isValidToken.data.data.email,
         password: password ? encodePassword : isValidToken.data.data.password,
-        name: name ? name : isValidToken.data.data.name,
-        age: age ? age : isValidToken.data.data.age,
+       
+      
       },
     });
 
     let payload = {
-      id: updatedUser.id,
+      user_id: updatedUser.user_id,
+      name: updatedUser.name,
+phone_number:updateUser.phone_number,
       email: updatedUser.email,
       password: updatedUser.password,
-      name: updatedUser.name,
-      age: updatedUser.age,
+      
+     
     };
 
     let newToken = createToken(payload);
@@ -118,21 +131,21 @@ const updateUser = async (req, res) => {
   }
 };
 const getUser = async (req, res) => {
-    let { id } = req.params;
+    let { user_id } = req.params;
     let { token } = req.headers;
     let isValidToken = checkToken(token);
     console.log(isValidToken)
     try {
       let data = await prisma.users.findMany({
         where: {
-          id: Number(id),
+          user_id: Number(user_id),
         },
       });
   
       if (data.length === 0) {
         res.send("user id does not exits");
       } else {
-        if (data.id == isValidToken.data.data.id) {
+        if (data.user_id == isValidToken.data.data.user_id) {
           // neu id tìm giống id token thì show info token (info token ko có avatar)
           res.send(isValidToken.data);
         } else {

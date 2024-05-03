@@ -10,6 +10,6 @@ import { verifyToken } from "../config/jwt.js";
 const userRoutes = express.Router();
 userRoutes.post('/login',login)
 userRoutes.post("/sign-up",signUp)
-userRoutes.get('/get-user/:id',verifyToken ,getUser)
-userRoutes.put("/update-user",updateUser)
+userRoutes.get('/get-user/:user_id',verifyToken ,getUser)
+userRoutes.put("/update-user",verifyToken ,updateUser)
 export default userRoutes;

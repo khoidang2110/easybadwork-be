@@ -3,4 +3,6 @@ INSERT INTO public.category (category_name,deleted) VALUES
 	 ('bandana',false),
 	 ('jacket',false),
 	 ('laxsdfsddfdc',false),
-	 ('teee32',true);
+	 ('laxsdfsdddfdc',false),
+	 ('laxsdfsddddfdc',false),
+	 ('teee3222',true);

@@ -1,7 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { checkToken } from "../config/jwt.js";
 
 const prisma = new PrismaClient();
 const createProductCategory = async (req,res) => {
+
+  let { token } = req.headers;
+ checkToken(token);
+
     try {
   
       let {category_name} = req.body;
@@ -30,6 +35,8 @@ if(findCategory.length !==0){
     }
   };
 const deleteCategory = async (req, res) => {
+  let { token } = req.headers;
+  checkToken(token);
     try {
       let { category_id } = req.params;
   
@@ -58,6 +65,8 @@ const deleteCategory = async (req, res) => {
     }
   };
   const updateCategory = async (req, res) => {
+    let { token } = req.headers;
+    checkToken(token);
     try {
       let { category_id,category_name, deleted } = req.query;
   console.log(deleted)
