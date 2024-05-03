@@ -5,10 +5,17 @@ const prisma = new PrismaClient();
 
 const createOrder = async (req, res) => {
     try {
-      let day = new Date();
-      let strDay = day.toISOString();
       let { full_name, email, address,cart} = req.body;
+      let currentDate = new Date();
+      let strDay = currentDate.toISOString();
+      const timestamp = currentDate.getTime().toString();
+      console.log('khi bam ', timestamp);
+
+   
+   
+     
       let newData = {
+        order_id:timestamp,
         date:strDay,
         full_name,
          email, 
@@ -61,7 +68,7 @@ cart.forEach(item => {
         const cartItemData = {
           size: item.size,
           quantity: item.quantity,
-          order_id: createdOrder.order_id*1, // Use the ID of the created order
+          order_id: createdOrder.order_id, // Use the ID of the created order
           product_id: item.product_id*1,
         };
   
@@ -98,12 +105,101 @@ for (const stockItem of stockFilter) {
 
 
 
-      res.send("create order successfully");
+      res.send(`create order successfully ${timestamp}`);
     } catch (error) {
       res.send(`BE error ${error}`);
     }
   };
+const getOrderById = async (req,res)=>{
 
-  
-  
-  export { createOrder };
+  try {
+    let { order_id } = req.query;
+
+     const order = await prisma.orders.findMany({
+    
+       where: {
+         order_id
+       
+       },
+       include: {
+        order_cart: true,
+ 
+      },
+     });
+     if (order.length > 0) {
+       res.send(order);
+     } else {
+       res.send(`No order found with id ${order_id}`);
+     }
+   } catch (error) {
+     res.status(500).send(`Internal server error: ${error}`);
+   }
+};
+
+const deleteOrder = async (req, res) => {
+  try {
+    let { order_id } = req.params;
+
+    const findItem = await prisma.orders.findUnique({
+      where: {
+        order_id,
+      },
+    });
+
+    if (findItem &&findItem.deleted===false) {
+      await prisma.orders.update({
+        where: {
+         order_id,
+        },
+        data: {
+          deleted: true,
+        },
+      });
+      res.send("You just deleted the order");
+    } else {
+      res.send("order not found");
+    }
+  } catch (error) {
+    console.error(`Backend error: ${error}`);
+    res.status(500).send("Internal Server Error");
+  }
+};
+const getOrderByDay = async (req,res)=>{
+console.log('click')
+  try {
+    let { start_day,end_day,page,size } = req.query;
+    let num_page = Number(page);
+    let num_size = Number(size);
+    let index = (num_page - 1) * num_size;
+
+
+console.log('startday',start_day);
+//console.log('newstarday',new Date(start_day))
+
+     const order = await prisma.orders.findMany({
+      skip:index,
+      take:num_size,
+       where: {
+        date: {
+          gte: new Date(start_day), // Start date
+          lte: new Date(end_day),   // End date
+        },
+       
+       },
+       include: {
+        order_cart: true,
+ 
+      },
+     });
+     if (order.length > 0) {
+       res.send(order);
+     } else {
+       res.send(`No order found`);
+     }
+   } catch (error) {
+     res.status(500).send(`Internal server error: ${error}`);
+   }
+};
+
+
+  export { createOrder,getOrderById,deleteOrder,getOrderByDay };

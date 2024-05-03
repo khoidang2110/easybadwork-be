@@ -7,7 +7,7 @@ const imageRoutes = express.Router();
 imageRoutes.post('/upload-image',storage.single('file'),uploadImg);
 imageRoutes.get('/get-all-images',getAllImages);
 
-// upload hình (max 8 hinh 1 lan)
+// upload hình (max 8 hinh 1 lan) ( trong phần thêm product đã có upload)
 imageRoutes.post('/upload-multi-images',storage.array('file'),uploadMultiImg);
 
 export default imageRoutes;

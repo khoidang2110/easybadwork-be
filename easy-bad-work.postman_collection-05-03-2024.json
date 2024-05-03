@@ -1,0 +1,627 @@
+{
+	"info": {
+		"_postman_id": "33a34059-6d5f-47ee-8e0e-adc0f47e4bd7",
+		"name": "easy-bad-work",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22947797"
+	},
+	"item": [
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "create product category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n       \"category_name\":\"laxsdfsddfdc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/category/create-products-category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"category",
+								"create-products-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:8081/category/update-category?category_id=1&category_name=teee32&deleted=false",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"category",
+								"update-category"
+							],
+							"query": [
+								{
+									"key": "category_id",
+									"value": "1"
+								},
+								{
+									"key": "category_name",
+									"value": "teee32"
+								},
+								{
+									"key": "deleted",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/category/delete-category/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"category",
+								"delete-category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "get product by category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/product/get-products-category/?categoryName=hat&page=1&size=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"product",
+								"get-products-category",
+								""
+							],
+							"query": [
+								{
+									"key": "categoryName",
+									"value": "hat"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/product/find-product/?keyword=work&page=1&size=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"product",
+								"find-product",
+								""
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "work"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": [
+										"/D:/KHIM/HINH/tee/beast1.jpg",
+										"/D:/KHIM/HINH/tee/beast2.jpg"
+									]
+								},
+								{
+									"key": "product_id",
+									"value": "1235323423",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "ao 344 lo",
+									"type": "text"
+								},
+								{
+									"key": "price_vnd",
+									"value": "600",
+									"type": "text"
+								},
+								{
+									"key": "price_usd",
+									"value": "70",
+									"type": "text"
+								},
+								{
+									"key": "decs_vi",
+									"value": "afa",
+									"type": "text"
+								},
+								{
+									"key": "decs_en",
+									"value": "aa",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/product/create-product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"product",
+								"create-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/product/update-product?product_id=2&name=aabc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"product",
+								"update-product"
+							],
+							"query": [
+								{
+									"key": "product_id",
+									"value": "2"
+								},
+								{
+									"key": "name",
+									"value": "aabc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/product/delete-product/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"product",
+								"delete-product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "stock",
+			"item": [
+				{
+					"name": "get all stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/stock/get-all-stocks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"stock",
+								"get-all-stocks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create stock",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \r\n       \"size\":\"S\",\r\n       \"stock\":10,\r\n       \"product_id\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/stock/create-stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"stock",
+								"create-stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update stock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"size\":\"L\",\r\n    \"stock\":10,\r\n    \"product_id\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/stock/update-stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"stock",
+								"update-stock"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "get order by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/order/get-order-by-id?order_id=1714643622728",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"get-order-by-id"
+							],
+							"query": [
+								{
+									"key": "order_id",
+									"value": "1714643622728"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"full_name\":\"553\",\r\n       \"email\":\"23\", \r\n       \"address\":\"34\", \r\n   \"cart\": [\r\n            {\r\n\"product_id\":1,\r\n                \"size\": \"S\",\r\n                \"quantity\": 2\r\n            },\r\n             {\r\n\"product_id\":1,\r\n                \"size\": \"M\",\r\n                \"quantity\": 2\r\n            }\r\n        ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/order/create-order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"create-order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create order - retail",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \r\n   \"cart\": [\r\n            {\r\n\"product_id\":1,\r\n                \"size\": \"S\",\r\n                \"quantity\": 2\r\n            },\r\n             {\r\n\"product_id\":1,\r\n                \"size\": \"M\",\r\n                \"quantity\": 2\r\n            }\r\n        ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/order/create-order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"create-order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete order",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/order/delete-order/1714644754841",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"delete-order",
+								"1714644754841"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get order by day",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/order/get-order-by-day?start_day=2024-05-02&end_day=2024-05-03&page=1&size=20",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"get-order-by-day"
+							],
+							"query": [
+								{
+									"key": "start_day",
+									"value": "2024-05-02"
+								},
+								{
+									"key": "end_day",
+									"value": "2024-05-03"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get all image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/image/get-all-images?page=1&size=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"image",
+						"get-all-images"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload img",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Khoi/Desktop/366740666_3156702884632584_2018084273224498313_n.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/image/upload-image",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"image",
+						"upload-image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload multi",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": [
+								"/D:/KHIM/HINH/hat/3fire1.jpg",
+								"/D:/KHIM/HINH/hat/3fire2.jpg",
+								"/D:/KHIM/HINH/hat/3fire3.jpg"
+							]
+						},
+						{
+							"key": "product_id",
+							"value": "3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8081/image/upload-multi-images",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"image",
+						"upload-multi-images"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

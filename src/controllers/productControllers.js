@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+
+
 const getProductByCategory = async (req, res) => {
   try {
     // Assuming prisma.products represents your product model
@@ -23,7 +25,7 @@ const getProductByCategory = async (req, res) => {
       res.send("No products found");
     } else {
       const getProducts = products.map((product) => ({
-        product_id: product.product_id * 1, // Ensure the field name matches the response
+        product_id: product.product_id , // Ensure the field name matches the response
         name: product.name,
         price_vnd: product.price_vnd * 1,
         price_usd: product.price_usd * 1,
@@ -55,7 +57,6 @@ const getProductByCategory = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
-
 const findProductByName = async (req, res) => {
   try {
    // let { keyword } = req.query;
@@ -82,4 +83,105 @@ const findProductByName = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
-export { getProductByCategory, findProductByName };
+
+const createProduct = async (req,res) => {
+  const imagePaths = req.files.map(file => file.path);
+
+  try {
+
+    let { product_id,name,price_vnd,price_usd,decs_vi,decs_en,category_id} = req.body;
+    let newDataProduct = {
+      product_id:Number(product_id),
+      name,
+      price_vnd:Number(price_vnd),
+      price_usd:Number(price_usd),
+      decs_vi,
+      decs_en,
+      category_id:Number(category_id)
+    };
+    await prisma.product.create({
+      data: newDataProduct
+    }
+     );
+   
+
+
+   
+    const newData = imagePaths.map(item => ({
+      product_id:product_id*1,
+      img_link: item,
+    }));
+
+    await prisma.image.createMany({
+      data: newData,
+    });
+    
+    res.send("Created product successfully");
+  } catch (error) {
+    res.send(`BE error ${error}`);
+  }
+
+  // res.send(req.files);
+}
+const deleteProduct = async (req,res) => {
+  try {
+    let { product_id } = req.params;
+
+    const findItem = await prisma.product.findUnique({
+      where: {
+        product_id: Number(product_id),
+      },
+    });
+    if (findItem&&findItem.deleted===false) {
+      await prisma.product.update({
+        where: {
+          product_id: Number(product_id),
+        },
+        data: {
+          deleted: true,
+        },
+      });
+      res.send("You just deleted the product");
+    } else {
+      res.send("product not found");
+    }
+  } catch (error) {
+    console.error(`Backend error: ${error}`);
+    res.status(500).send("Internal Server Error");
+  }
+};
+const updateProduct = async (req,res) => {
+  try {
+    let { product_id,name,price_vnd,price_usd,decs_vi,decs_en,category_id,deleted } = req.query;
+
+    const findItem = await prisma.product.findUnique({
+      where: {
+        product_id: Number(product_id),
+      },
+    });
+    if (findItem) {
+      await prisma.product.update({
+        where: {
+          product_id: Number(product_id),
+        },
+        data: {
+          name: name || findItem.name,
+          price_vnd: price_vnd ? price_vnd : findItem.price_vnd,
+          price_usd: price_usd || findItem.price_usd,
+          decs_vi: decs_vi || findItem.decs_vi,
+          decs_en: decs_en || findItem.decs_en,
+          category_id: category_id || findItem.category_id, 
+          deleted: deleted ? JSON.parse(deleted) : findItem.deleted
+        },
+      });
+      res.send("You just update the product");
+    } else {
+      res.send("product not found");
+    }
+  } catch (error) {
+    console.error(`Backend error: ${error}`);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+export { getProductByCategory, findProductByName,createProduct, deleteProduct,updateProduct };
