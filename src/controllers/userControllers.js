@@ -35,8 +35,9 @@ const login = async (req, res) => {
        
          
         };
-        let token = createToken(payload);
-        res.status(200).send(token);
+        // let token = createToken(payload);
+        // res.status(200).send(token);
+        res.status(200).send("welcome!");
       } else {
         res.status(400).send("password incorrect!");
       }
@@ -85,56 +86,45 @@ const signUp = async (req, res) => {
   }
 };
 const updateUser = async (req, res) => {
-  let { user_id, name,phone_number,email,password } = req.body;
-  let { token } = req.headers;
-  let isValidToken = checkToken(token);
-  let encodePassword = bcrypt.hashSync(password, 10);
-
-  // isvalidtoken status code 200 là trùng token
-  // 401  là invalid
-//   console.log('isValidToken',isValidToken.statusCode)
-// if(isValidToken.statusCode==401){
-//     res.send("token incorrect");
-// }else 
-if (user_id == Number(isValidToken.data.data.user_id)) {
-   const updatedUser =  await prisma.users.update({
+  try {
+    let { user_id, name, phone_number, email, password } = req.body;
+    let encodePassword = bcrypt.hashSync(password, 10);
+    let userInfo = await prisma.users.findUnique({
       where: {
-        user_id,
-      },
-      data: {
-        name: name ? name : isValidToken.data.data.name,
-        phone_number: phone_number ? phone_number : isValidToken.data.data.phone_number,
-        email: email ? email : isValidToken.data.data.email,
-        password: password ? encodePassword : isValidToken.data.data.password,
-       
-      
+        user_id: Number(user_id),
       },
     });
+    console.log('userInfo', userInfo);
 
-    let payload = {
-      user_id: updatedUser.user_id,
-      name: updatedUser.name,
-phone_number:updateUser.phone_number,
-      email: updatedUser.email,
-      password: updatedUser.password,
-      
-     
-    };
+    if (!userInfo) {
+      res.status(404).send("User id does not exist");
+    } else {
+      await prisma.users.update({
+        where: {
+          user_id: Number(user_id),
+        },
+        data: {
+          name: name ? name : userInfo.name,
+          phone_number: phone_number ? phone_number : userInfo.phone_number,
+          email: email ? email : userInfo.email,
+          password: password ? encodePassword : userInfo.password,
+        },
+      });
 
-    let newToken = createToken(payload);
-    res.status(200).send({
-      message: "User updated, please use the new token to access",
-      token: newToken,
-    });
-  } else {
-    res.send("you are not the owner");
+      res.status(200).send({
+        message: "User updated"
+      });
+    }
+  } catch (error) {
+    console.error("Update failed:", error);
+    res.status(500).send("Update failed: " + error.message);
   }
 };
 const getUser = async (req, res) => {
     let { user_id } = req.params;
-    let { token } = req.headers;
-    let isValidToken = checkToken(token);
-    console.log(isValidToken)
+    // let { token } = req.headers;
+    // let isValidToken = checkToken(token);
+    // console.log(isValidToken)
     try {
       let data = await prisma.users.findMany({
         where: {
@@ -145,13 +135,15 @@ const getUser = async (req, res) => {
       if (data.length === 0) {
         res.send("user id does not exits");
       } else {
-        if (data.user_id == isValidToken.data.data.user_id) {
-          // neu id tìm giống id token thì show info token (info token ko có avatar)
-          res.send(isValidToken.data);
-        } else {
-          // show info data
-          res.send(data);
-        }
+    // show info data
+    res.send(data);
+
+        // if (data.user_id == isValidToken.data.data.user_id) {
+        //   // neu id tìm giống id token thì show info token (info token ko có avatar)
+        //   res.send(isValidToken.data);
+        // } else {
+      
+        // }
       }
     } catch (error) {
       res.send(`BE error ${error}`);

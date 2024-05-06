@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 
 
 const getProductByCategory = async (req, res) => {
-  let { token } = req.headers;
-  checkToken(token);
+  // let { token } = req.headers;
+  // checkToken(token);
   try {
     // Assuming prisma.products represents your product model
     let { categoryName, page, size } = req.query;
@@ -60,8 +60,8 @@ const getProductByCategory = async (req, res) => {
   }
 };
 const findProductByName = async (req, res) => {
-  let { token } = req.headers;
-  checkToken(token);
+  // let { token } = req.headers;
+  // checkToken(token);
   try {
    // let { keyword } = req.query;
     let { keyword, page, size } = req.query;
@@ -90,8 +90,8 @@ const findProductByName = async (req, res) => {
 
 const createProduct = async (req,res) => {
   const imagePaths = req.files.map(file => file.path);
-  let { token } = req.headers;
-  checkToken(token);
+  // let { token } = req.headers;
+  // checkToken(token);
   try {
 
     let { product_id,name,price_vnd,price_usd,decs_vi,decs_en,category_id} = req.body;
@@ -129,8 +129,8 @@ const createProduct = async (req,res) => {
   // res.send(req.files);
 }
 const deleteProduct = async (req,res) => {
-  let { token } = req.headers;
-  checkToken(token);
+  // let { token } = req.headers;
+  // checkToken(token);
   try {
     let { product_id } = req.params;
 
@@ -158,8 +158,8 @@ const deleteProduct = async (req,res) => {
   }
 };
 const updateProduct = async (req,res) => {
-  let { token } = req.headers;
-  checkToken(token);
+  // let { token } = req.headers;
+  // checkToken(token);
   try {
     let { product_id,name,price_vnd,price_usd,decs_vi,decs_en,category_id,deleted } = req.query;
 
