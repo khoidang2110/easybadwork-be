@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-//import { checkToken, createToken } from "../../config/jwt.js";
 import bcrypt from "bcrypt";
-import { checkToken, createToken } from "../config/jwt.js";
+//import sendMail from '../config/sendmail.js'
 
 const prisma = new PrismaClient();
 
@@ -80,6 +79,13 @@ const signUp = async (req, res) => {
         data: newUser,
       });
       res.status(201).send("user is created!");
+      // await sendMail({
+      //   email,
+      //   subject:'ebw test',
+      //   html: `
+      //   <h1>Có khách mua hàng </h1>
+      //   `
+      // })
     }
   } catch (error) {
     res.status(500).send(`Backend error: ${error}`);

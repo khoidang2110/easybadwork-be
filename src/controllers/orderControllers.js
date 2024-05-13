@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import sendMail from '../config/sendmail.js';
 
 const prisma = new PrismaClient();
 
@@ -22,10 +23,13 @@ const createOrder = async (req, res) => {
         address, 
        
       };
-      const createdOrder =  await prisma.orders.create({
-        data: newData
-      }
-       );
+
+// tạo order
+const createdOrder =  await prisma.orders.create({
+  data: newData
+}
+ );
+
 // lay stock
 let stock = await prisma.stock.findMany();
 
@@ -41,7 +45,6 @@ const stockFilter = stock.filter(stockItem => {
 });
 
 // kiem tra neu quantity > stock
-
 stockFilter.forEach(stockItem => {
   const matchingItem = cart.find(item => item.size === stockItem.size && item.product_id === stockItem.product_id);
   if (matchingItem.quantity > stockItem.stock) {
@@ -52,7 +55,6 @@ stockFilter.forEach(stockItem => {
 console.log('filter',stockFilter);
 
 // check cart xem hàng order có tồn tại ko
-
 cart.forEach(item => {
   const foundItem = stock.find(stockItem => stockItem.product_id === item.product_id && stockItem.size === item.size);
   if (!foundItem) {
@@ -61,9 +63,6 @@ cart.forEach(item => {
 });
 
 // tạo order_cart
-
-
-
        for (const item of cart) {
         const cartItemData = {
           size: item.size,
@@ -78,9 +77,7 @@ cart.forEach(item => {
         });
       }
 
-
 // trừ trong stock:
-
 cart.forEach(item => {
   const stockItem = stockFilter.find(stock => stock.product_id === item.product_id && stock.size === item.size);
   if (stockItem) {
@@ -90,6 +87,7 @@ cart.forEach(item => {
   }
 });
 console.log(stockFilter); 
+
 // cập nhật stock:
 for (const stockItem of stockFilter) {
   await prisma.stock.updateMany({
@@ -100,9 +98,27 @@ for (const stockItem of stockFilter) {
           stock: stockItem.stock // Update the stock value
       }
   });
+
 }
 
-
+if (email){
+       // gửi mail shop
+       await sendMail({
+        //email: 'easybadwork@gmail.com',
+         email: 'khoidang2110@gmail.com',
+        subject:'ebw shop',
+        html: `<h1>Có khách mua hàng</h1> `
+      })
+      // gửi mail khách hàng
+ 
+      await sendMail({
+        email,
+        subject:'ebw shop',
+        html: `
+        <h1>Bạn đã đặt một đơn hàng từ easybadwork. </h1>
+        `
+      })
+    }
 
 
       res.send(`create order successfully ${timestamp}`);
