@@ -89,14 +89,21 @@ const findProductByName = async (req, res) => {
 };
 
 const createProduct = async (req,res) => {
+
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).send("No files uploaded.");
+  }
   const imagePaths = req.files.map(file => file.path);
-  // let { token } = req.headers;
-  // checkToken(token);
+  const random8Number = Math.floor(Math.random() * 90000000) + 10000000;
   try {
 
-    let { product_id,name,price_vnd,price_usd,decs_vi,decs_en,category_id} = req.body;
+  
+  // Sử dụng hàm
+  
+ 
+    let { name,price_vnd,price_usd,decs_vi,decs_en,category_id} = req.body;
     let newDataProduct = {
-      product_id:Number(product_id),
+      product_id:random8Number,
       name,
       price_vnd:Number(price_vnd),
       price_usd:Number(price_usd),
@@ -113,7 +120,7 @@ const createProduct = async (req,res) => {
 
    
     const newData = imagePaths.map(item => ({
-      product_id:product_id*1,
+      product_id:random8Number,
       img_link: item,
     }));
 

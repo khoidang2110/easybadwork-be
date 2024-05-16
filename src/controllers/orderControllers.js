@@ -104,19 +104,17 @@ for (const stockItem of stockFilter) {
 if (email){
        // gửi mail shop
        await sendMail({
-        //email: 'easybadwork@gmail.com',
-         email: 'khoidang2110@gmail.com',
-        subject:'ebw shop',
-        html: `<h1>Có khách mua hàng</h1> `
+        email: 'easybadwork@gmail.com',
+         //email: 'khoidang2110@gmail.com',
+        subject:`ebw shop ${timestamp}`,
+        html: `<h1>Có khách mua hàng!!! mã đơn hàng là: ${timestamp} </h1> `
       })
       // gửi mail khách hàng
  
       await sendMail({
         email,
-        subject:'ebw shop',
-        html: `
-        <h1>Bạn đã đặt một đơn hàng từ easybadwork. </h1>
-        `
+        subject:`ebw shop ${timestamp}`,
+        html: `<h1>Bạn đã đặt một đơn hàng từ easybadwork, mã đơn hàng là: ${timestamp} </h1>`
       })
     }
 
