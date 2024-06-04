@@ -18,6 +18,32 @@ const getAllStocks = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
+const getStockById = async (req,res)=>{
+
+  try {
+    let { product_id } = req.query;
+
+     const stock = await prisma.stock.findMany({
+    
+       where: {
+         product_id:Number(product_id)
+       
+       }
+      //  ,
+      //  include: {
+      //   order_cart: true,
+ 
+      // },
+     });
+     if (stock.length > 0) {
+       res.send(stock);
+     } else {
+       res.send(`No stock found with id ${product_id}`);
+     }
+   } catch (error) {
+     res.status(500).send(`Internal server error: ${error}`);
+   }
+};
 
 //create stock
 const createStock = async (req, res) => {
@@ -92,4 +118,4 @@ const updateStock = async (req, res) => {
   }
 };
 
-export { getAllStocks, createStock, updateStock };
+export { getAllStocks, createStock, updateStock,getStockById };

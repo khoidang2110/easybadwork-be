@@ -114,7 +114,8 @@ if (email){
       await sendMail({
         email,
         subject:`ebw shop ${timestamp}`,
-        html: `<h1>Bạn đã đặt một đơn hàng từ easybadwork, mã đơn hàng là: ${timestamp} </h1>`
+        html: `<h1>Bạn đã đặt thành công đơn hàng từ easybadwork, mã đơn hàng của bạn là: ${timestamp}, easybadwork xin cảm ơn. </h1>
+        <h1>You have successfully placed an order from EasyBadWork. Your order code is: ${timestamp}, Thank you.</h1>`
       })
     }
 
