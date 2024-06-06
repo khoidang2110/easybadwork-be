@@ -87,31 +87,39 @@ const findProductByName = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
-const findProductById = async (req,res)=>{
-
+const findProductById = async (req, res) => {
   try {
     let { product_id } = req.query;
 
-     const product = await prisma.product.findMany({
-    
-       where: {
-         product_id:Number(product_id)
-       
-       }
-      //  ,
-      //  include: {
-      //   order_cart: true,
- 
-      // },
-     });
-     if (product.length > 0) {
-       res.send(product);
-     } else {
-       res.send(`No product found with id ${product_id}`);
-     }
-   } catch (error) {
-     res.status(500).send(`Internal server error: ${error}`);
-   }
+    const product = await prisma.product.findUnique({
+      where: {
+        product_id: Number(product_id)
+      },
+      include: {
+        image: true
+      }
+    });
+
+    if (product) {
+      console.log('product', product);
+      const transformedProduct = {
+        product_id: product.product_id,
+        name: product.name,
+        price_vnd: product.price_vnd * 1,
+        price_usd: product.price_usd * 1,
+        decs_vi: product.decs_vi,
+        decs_en: product.decs_en,
+        category_id: product.category_id,
+        image: product.image?.map(item => item.img_link)
+      };
+
+      res.status(200).send(transformedProduct);
+    } else {
+      res.status(404).send(`No product found with id ${product_id}`);
+    }
+  } catch (error) {
+    res.status(500).send(`Internal server error: ${error}`);
+  }
 };
 const createProduct = async (req,res) => {
 
