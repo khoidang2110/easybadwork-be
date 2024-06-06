@@ -87,7 +87,32 @@ const findProductByName = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
+const findProductById = async (req,res)=>{
 
+  try {
+    let { product_id } = req.query;
+
+     const product = await prisma.product.findMany({
+    
+       where: {
+         product_id:Number(product_id)
+       
+       }
+      //  ,
+      //  include: {
+      //   order_cart: true,
+ 
+      // },
+     });
+     if (product.length > 0) {
+       res.send(product);
+     } else {
+       res.send(`No product found with id ${product_id}`);
+     }
+   } catch (error) {
+     res.status(500).send(`Internal server error: ${error}`);
+   }
+};
 const createProduct = async (req,res) => {
 
   if (!req.files || req.files.length === 0) {
@@ -200,4 +225,4 @@ const updateProduct = async (req,res) => {
   }
 };
 
-export { getProductByCategory, findProductByName,createProduct, deleteProduct,updateProduct };
+export { getProductByCategory, findProductByName,createProduct, deleteProduct,updateProduct,findProductById };
