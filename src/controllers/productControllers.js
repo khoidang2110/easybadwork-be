@@ -75,15 +75,43 @@ const findProductByName = async (req, res) => {
         name: {
           contains: keyword,
           mode: "insensitive", // case-insensitive search ( uppercase)
-        },
+        }
+      },
+      
+      include: {
+        category: true,
+        image: true,
+        stock: true, // Include related category information
       },
     });
-    if (products.length > 0) {
-      res.send(products);
+    if (products.length === 0) {
+      res.send("No products found");
     } else {
-      console.log(`No products found with name ${keyword}`);
+      const getProducts = products.map((product) => ({
+        product_id: product.product_id , // Ensure the field name matches the response
+        name: product.name,
+        price_vnd: product.price_vnd * 1,
+        price_usd: product.price_usd * 1,
+        decs_vi: product.decs_vi,
+        decs_en: product.decs_en,
+        category: product.category.category_name,
+        image: product.image.map((item) => item.img_link),
+        stock: product.stock
+          .filter((item) => item.stock > 0) // stock = 0 ko render ra size
+          .map((item) => ({
+            size: item.size,
+            stock: item.stock,
+          })),
+      }));
+  
+      console.log("getProducts", getProducts);
+  
+  
+        res.send(getProducts);
+    
     }
   } catch (error) {
+    console.log("error", error);
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
@@ -96,21 +124,29 @@ const findProductById = async (req, res) => {
         product_id: Number(product_id)
       },
       include: {
-        image: true
+        category: true,
+        image: true,
+        stock: true, // Include related category information
       }
     });
 
     if (product) {
       console.log('product', product);
       const transformedProduct = {
-        product_id: product.product_id,
+        product_id: product.product_id , // Ensure the field name matches the response
         name: product.name,
         price_vnd: product.price_vnd * 1,
         price_usd: product.price_usd * 1,
         decs_vi: product.decs_vi,
         decs_en: product.decs_en,
-        category_id: product.category_id,
-        image: product.image?.map(item => item.img_link)
+        category: product.category.category_name,
+        image: product.image.map((item) => item.img_link),
+        stock: product.stock
+          .filter((item) => item.stock > 0) // stock = 0 ko render ra size
+          .map((item) => ({
+            size: item.size,
+            stock: item.stock,
+          }))
       };
 
       res.status(200).send(transformedProduct);
