@@ -2,6 +2,7 @@ import express from "express";
 import {
   createProduct,
   deleteProduct,
+  findMultiProductById,
   findProductById,
   findProductByName,
   getProductByCategory,
@@ -19,6 +20,7 @@ productRoutes.get("/get-products-category",getProductByCategory);
 productRoutes.get("/find-product",findProductByName);
 
 productRoutes.get('/find-product-by-id',findProductById);
+productRoutes.get('/find-multi-product-by-id',findMultiProductById);
 // tạo sản phẩm, add hình sản phẩm
 productRoutes.post('/create-product',storage.array('file'),createProduct);
 

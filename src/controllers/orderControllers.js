@@ -104,8 +104,8 @@ for (const stockItem of stockFilter) {
 if (email){
        // gửi mail shop
        await sendMail({
-        email: 'easybadwork@gmail.com',
-         //email: 'khoidang2110@gmail.com',
+        //email: 'easybadwork@gmail.com',
+         email: 'easybadwork.02@gmail.com',
         subject:`ebw shop ${timestamp}`,
         html: `<h1>Có khách mua hàng!!! mã đơn hàng là: ${timestamp} </h1> `
       })
@@ -120,7 +120,7 @@ if (email){
     }
 
 
-      res.send(`create order successfully ${timestamp}`);
+      res.send(`${timestamp}`);
     } catch (error) {
       res.send(`BE error ${error}`);
     }
