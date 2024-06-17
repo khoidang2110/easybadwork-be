@@ -157,14 +157,12 @@ const findProductById = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
-const findMultiProductById = async (req, res) => {
+const getAllProduct= async (req, res) => {
   try {
-    let {idArray} = req.body;
+   
 
     const products = await prisma.product.findMany({
-      where: {
-        product_id:  { in: idArray},
-      },
+    
       include: {
         category: true,
         image: true,
@@ -173,6 +171,7 @@ const findMultiProductById = async (req, res) => {
     });
 
     if (products.length > 0) {
+      // Transform products into desired format
       const transformedProducts = products.map((product) => ({
         product_id: product.product_id,
         name: product.name,
@@ -180,7 +179,7 @@ const findMultiProductById = async (req, res) => {
         price_usd: product.price_usd * 1,
         decs_vi: product.decs_vi,
         decs_en: product.decs_en,
-        category: product.category.category_name,
+        category: product.category?.category_name || 'Uncategorized',
         image: product.image.map((item) => item.img_link),
         stock: product.stock
           .filter((item) => item.stock > 0)
@@ -192,12 +191,65 @@ const findMultiProductById = async (req, res) => {
 
       res.status(200).send(transformedProducts);
     } else {
-      res.status(404).send(`No product found with id `);
+      res.status(404).send('No products found'); // Handle case where no products are found
     }
   } catch (error) {
-    res.status(500).send(`Internal server error: ${error}`);
+    console.error('Error fetching products:', error);
+    res.status(500).send(`Internal server error: ${error.message}`);
   }
 };
+// const findMultiProductById = async (req, res) => {
+//   try {
+//     let { idArray } = req.body;
+ 
+   
+//     // Use Promise.all to fetch products for all ids concurrently
+//     const productPromises = await idArray.map(async (productId) => {
+//       const products = await prisma.product.findMany({
+//         where: {
+//           product_id: productId,
+//         },
+//         include: {
+//           category: true,
+//           image: true,
+//           stock: true,
+//         }
+//       });
+//       return products; // Return the products found for this productId
+//     });
+
+//     // Wait for all promises to resolve
+//     const allProducts = await Promise.all(productPromises);
+
+//     // Flatten the array of arrays into a single array of products
+//     const flattenedProducts = allProducts.flat();
+
+//     if (flattenedProducts.length > 0) {
+//       const transformedProducts = flattenedProducts.map((product) => ({
+//         product_id: product.product_id,
+//         name: product.name,
+//         price_vnd: product.price_vnd * 1,
+//         price_usd: product.price_usd * 1,
+//         decs_vi: product.decs_vi,
+//         decs_en: product.decs_en,
+//         category: product.category?.category_name || 'Uncategorized', // Ensure category_name is accessed safely
+//         image: product.image.map((item) => item.img_link),
+//         stock: product.stock
+//           .filter((item) => item.stock > 0)
+//           .map((item) => ({
+//             size: item.size,
+//             stock: item.stock,
+//           })),
+//       }));
+
+//       res.status(200).send(transformedProducts);
+//     } else {
+//       res.status(404).send('No products found with the provided IDs');
+//     }
+//   } catch (error) {
+//     res.status(500).send(`Internal server error: ${error.message}`);
+//   }
+// };
 const createProduct = async (req,res) => {
 
   if (!req.files || req.files.length === 0) {
@@ -310,4 +362,4 @@ const updateProduct = async (req,res) => {
   }
 };
 
-export { getProductByCategory, findProductByName,createProduct, deleteProduct,updateProduct,findProductById,findMultiProductById };
+export { getProductByCategory, findProductByName,createProduct, deleteProduct,updateProduct,findProductById,getAllProduct };

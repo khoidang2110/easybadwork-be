@@ -2,9 +2,10 @@ import express from "express";
 import {
   createProduct,
   deleteProduct,
-  findMultiProductById,
+ 
   findProductById,
   findProductByName,
+  getAllProduct,
   getProductByCategory,
   updateProduct,
 } from "../controllers/productControllers.js";
@@ -20,7 +21,8 @@ productRoutes.get("/get-products-category",getProductByCategory);
 productRoutes.get("/find-product",findProductByName);
 
 productRoutes.get('/find-product-by-id',findProductById);
-productRoutes.get('/find-multi-product-by-id',findMultiProductById);
+productRoutes.get('/get-all-product',getAllProduct)
+// productRoutes.get('/find-multi-product-by-id',findMultiProductById);
 // tạo sản phẩm, add hình sản phẩm
 productRoutes.post('/create-product',storage.array('file'),createProduct);
 
