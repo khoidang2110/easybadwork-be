@@ -9,11 +9,12 @@ const prisma = new PrismaClient();
 
 const login = async (req, res) => {
   try {
-    let { user_id, password } = req.body;
+    let { name, password } = req.body;
+
     // check email
-    let data = await prisma.users.findUnique({
+    let data = await prisma.users.findFirst({
       where: {
-        user_id,
+        name,
       },
     });
 
@@ -25,15 +26,15 @@ const login = async (req, res) => {
         // có => tạo token
         // tạo token -> jsonwebtoken jwt
         // mã hoá password->bcrypt
-        let payload = {
-          user_id: data.user_id,
-          name: data.name,
-          phone_number:data.phone_number,
-          email: data.email,
-          password: data.password,
+        // let payload = {
+        //   user_id: data.user_id,
+        //   name: data.name,
+        //   phone_number:data.phone_number,
+        //   email: data.email,
+        //   password: data.password,
        
          
-        };
+        // };
         // let token = createToken(payload);
         // res.status(200).send(token);
         res.status(200).send("welcome!");
