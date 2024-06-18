@@ -1,5 +1,5 @@
 import express from "express";
-import { createProductCategory, deleteCategory, updateCategory } from "../controllers/categoryControllers.js";
+import { createProductCategory, deleteCategory, getAllCategory, updateCategory } from "../controllers/categoryControllers.js";
 import { verifyToken } from "../config/jwt.js";
 
 const categoryRoutes = express.Router();
@@ -13,4 +13,5 @@ categoryRoutes.put('/delete-category/:category_id',deleteCategory);
 // cập nhật category ( có cập nhật deleted)
 categoryRoutes.put('/update-category',updateCategory);
 
+categoryRoutes.get(`/get-all-category`,getAllCategory);
 export default categoryRoutes;

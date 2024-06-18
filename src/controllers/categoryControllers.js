@@ -95,4 +95,19 @@ const deleteCategory = async (req, res) => {
       res.status(500).send("Internal Server Error");
     }
   };
-export { createProductCategory,deleteCategory,updateCategory };
+
+  const getAllCategory = async (req,res)=>{
+    try {
+      const categories = await prisma.category.findMany();
+  
+      if (categories.length > 0) {
+        res.status(200).json(categories);
+      } else {
+        res.status(404).send('No categories found'); // Handle case where no categories are found
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      res.status(500).send(`Internal server error: ${error.message}`);
+    }
+  }
+export { createProductCategory,deleteCategory,updateCategory,getAllCategory };
