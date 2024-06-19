@@ -18,8 +18,9 @@ const getAllStocks = async (req, res) => {
     res.status(500).send(`Internal server error: ${error}`);
   }
 };
+// get stock by product  id
 const getStockById = async (req,res)=>{
-
+//console.log('chay get stock by id')
   try {
     let { product_id } = req.query;
 
@@ -117,5 +118,31 @@ const updateStock = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+//delete sotck
+const deleteStock = async (req,res) => {
+  try {
+    let { stock_id } = req.query;
+    console.log('chay delete stock',stock_id )
+    const findStock = await prisma.stock.findUnique({
+      where: {
+        stock_id: Number(stock_id),
+      },
+    });
+    if (findStock) {
+      await prisma.stock.delete({
+        where: {
+          stock_id: Number(stock_id),
+        },
+      });
+      res.send("You just deleted the stock");
+    } else {
+      res.send("stock not found");
+    }
+  } catch (error) {
+    console.error(`Backend error: ${error}`);
+    res.status(500).send("Internal Server Error");
+  }
 
-export { getAllStocks, createStock, updateStock,getStockById };
+}
+
+export { getAllStocks, createStock, updateStock,getStockById,deleteStock };

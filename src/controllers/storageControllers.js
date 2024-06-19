@@ -11,5 +11,5 @@ const storage = multer({
         }
     })
 });
-console.log('chay multer',storage.array)
+//console.log('chay multer',storage.array)
 export default storage;
