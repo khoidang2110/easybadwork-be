@@ -53,8 +53,8 @@ model product {
   name        String?      @db.VarChar(225)
   price_vnd   Int?
   price_usd   Int?
-  decs_vi     String?      @db.VarChar(225)
-  decs_en     String?      @db.VarChar(225)
+  desc_vi     String?      @db.VarChar(225)
+  desc_en     String?      @db.VarChar(225)
   category_id Int?
   deleted     Boolean?     @default(false)
   image       image[]
