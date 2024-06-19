@@ -31,8 +31,8 @@ const getProductByCategory = async (req, res) => {
         name: product.name,
         price_vnd: product.price_vnd * 1,
         price_usd: product.price_usd * 1,
-        decs_vi: product.decs_vi,
-        decs_en: product.decs_en,
+        desc_vi: product.desc_vi,
+        desc_en: product.desc_en,
         category: product.category.category_name,
         image: product.image.map((item) => item.img_link),
         stock: product.stock
@@ -92,8 +92,8 @@ const findProductByName = async (req, res) => {
         name: product.name,
         price_vnd: product.price_vnd * 1,
         price_usd: product.price_usd * 1,
-        decs_vi: product.decs_vi,
-        decs_en: product.decs_en,
+        desc_vi: product.desc_vi,
+        desc_en: product.desc_en,
         category: product.category.category_name,
         image: product.image.map((item) => item.img_link),
         stock: product.stock
@@ -137,8 +137,8 @@ const findProductById = async (req, res) => {
         name: product.name,
         price_vnd: product.price_vnd * 1,
         price_usd: product.price_usd * 1,
-        decs_vi: product.decs_vi,
-        decs_en: product.decs_en,
+        desc_vi: product.desc_vi,
+        desc_en: product.desc_en,
         category: product.category.category_name,
         image: product.image.map((item) => item.img_link),
         stock: product.stock
@@ -177,8 +177,8 @@ const getAllProduct= async (req, res) => {
         name: product.name,
         price_vnd: product.price_vnd * 1,
         price_usd: product.price_usd * 1,
-        decs_vi: product.decs_vi,
-        decs_en: product.decs_en,
+        desc_vi: product.desc_vi,
+        desc_en: product.desc_en,
         category: product.category?.category_name || 'Uncategorized',
         image: product.image.map((item) => item.img_link),
         stock: product.stock
@@ -255,6 +255,7 @@ const createProduct = async (req,res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).send("No files uploaded.");
   }
+  console.log('req.files',req.files)
   const imagePaths = req.files.map(file => file.path);
   const random8Number = Math.floor(Math.random() * 90000000) + 10000000;
   try {
@@ -263,14 +264,14 @@ const createProduct = async (req,res) => {
   // Sử dụng hàm
   
  
-    let { name,price_vnd,price_usd,decs_vi,decs_en,category_id} = req.body;
+    let { name,price_vnd,price_usd,desc_vi,desc_en,category_id} = req.body;
     let newDataProduct = {
       product_id:random8Number,
       name,
       price_vnd:Number(price_vnd),
       price_usd:Number(price_usd),
-      decs_vi,
-      decs_en,
+      desc_vi,
+      desc_en,
       category_id:Number(category_id)
     };
     await prisma.product.create({
@@ -330,7 +331,7 @@ const updateProduct = async (req,res) => {
   // let { token } = req.headers;
   // checkToken(token);
   try {
-    let { product_id,name,price_vnd,price_usd,decs_vi,decs_en,category_id,deleted } = req.query;
+    let { product_id,name,price_vnd,price_usd,desc_vi,desc_en,category_id,deleted } = req.query;
 
     const findItem = await prisma.product.findUnique({
       where: {
@@ -346,8 +347,8 @@ const updateProduct = async (req,res) => {
           name: name || findItem.name,
           price_vnd: price_vnd ? price_vnd : findItem.price_vnd,
           price_usd: price_usd || findItem.price_usd,
-          decs_vi: decs_vi || findItem.decs_vi,
-          decs_en: decs_en || findItem.decs_en,
+          desc_vi: desc_vi || findItem.desc_vi,
+          desc_en: desc_en || findItem.desc_en,
           category_id: category_id || findItem.category_id, 
           deleted: deleted ? JSON.parse(deleted) : findItem.deleted
         },

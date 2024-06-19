@@ -1,6 +1,7 @@
 import multer, {diskStorage } from 'multer';
 
 const storage = multer({
+    
     storage:diskStorage({
         destination: process.cwd() + '/public/img',
         filename:(req,file,callback)=>{
@@ -10,5 +11,5 @@ const storage = multer({
         }
     })
 });
-
+console.log('chay multer',storage.array)
 export default storage;
