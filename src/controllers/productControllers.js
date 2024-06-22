@@ -331,7 +331,7 @@ const updateProduct = async (req,res) => {
   // let { token } = req.headers;
   // checkToken(token);
   try {
-    let { product_id,name,price_vnd,price_usd,desc_vi,desc_en,category_id,deleted } = req.query;
+    let { product_id,name,price_vnd,price_usd,desc_vi,desc_en,category_id,deleted } = req.body;
 
     const findItem = await prisma.product.findUnique({
       where: {
