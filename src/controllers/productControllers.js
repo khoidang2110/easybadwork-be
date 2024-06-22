@@ -34,6 +34,7 @@ const getProductByCategory = async (req, res) => {
         desc_vi: product.desc_vi,
         desc_en: product.desc_en,
         category: product.category.category_name,
+        delete:product.deleted,
         image: product.image.map((item) => item.img_link),
         stock: product.stock
           .filter((item) => item.stock > 0) // stock = 0 ko render ra size
@@ -95,6 +96,7 @@ const findProductByName = async (req, res) => {
         desc_vi: product.desc_vi,
         desc_en: product.desc_en,
         category: product.category.category_name,
+        delete:product.deleted,
         image: product.image.map((item) => item.img_link),
         stock: product.stock
           .filter((item) => item.stock > 0) // stock = 0 ko render ra size
@@ -180,6 +182,7 @@ const getAllProduct= async (req, res) => {
         desc_vi: product.desc_vi,
         desc_en: product.desc_en,
         category: product.category?.category_name || 'Uncategorized',
+        delete:product.deleted,
         image: product.image.map((item) => item.img_link),
         stock: product.stock
           .filter((item) => item.stock > 0)
