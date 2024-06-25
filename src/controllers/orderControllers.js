@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const createOrder = async (req, res) => {
     try {
-      let { full_name, email, address,cart} = req.body;
+      let { full_name, email, address,cart,city,dist,note,payment,phone} = req.body;
       let currentDate = new Date();
       let strDay = currentDate.toISOString();
       const timestamp = currentDate.getTime().toString();
@@ -21,6 +21,12 @@ const createOrder = async (req, res) => {
         full_name,
          email, 
         address, 
+city:city ? city : '',
+dist:dist ? dist : '',
+note:note ? note : '',
+payment,
+phone
+
        
       };
 
