@@ -43,9 +43,7 @@ model orders {
   note       String?      @db.VarChar(225)
   payment    String?      @db.VarChar(225)
   deleted    Boolean?     @default(false)
-  product_id Int?
   order_cart order_cart[]
-  product    product?     @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model product {
@@ -59,7 +57,6 @@ model product {
   deleted     Boolean?     @default(false)
   image       image[]
   order_cart  order_cart[]
-  orders      orders[]
   category    category?    @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
   stock       stock[]
 }
