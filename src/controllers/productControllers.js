@@ -164,7 +164,9 @@ const getAllProduct= async (req, res) => {
    
 
     const products = await prisma.product.findMany({
-    
+      where: {
+        deleted: false, // Filter products where deleted is false
+      },
       include: {
         category: true,
         image: true,
