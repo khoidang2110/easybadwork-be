@@ -11,8 +11,21 @@ app.use(express.json()); //middleware để  parse body string -> body json
 app.use(express.static(".")); // middleware để xác định nơi lưu file ( dùng lấy hình show browser)
 app.use(cors()); //middleware cho tất cả các request từ bên ngoài vào( front end) để trước rootroutes để bypass (backend chạy từ trên xuống)
 
-const corsOptions = {
-    origin: 'https://easybadwork-fe.vercel.app', // Replace with your frontend domain
+const allowedOrigins = [
+    'https://easybadwork-fe.vercel.app',
+    'http://localhost:3000',
+    'https://www.easybadwork.com',  // Add more domains as needed
+  ];
+  
+  const corsOptions = {
+    origin: (origin, callback) => {
+      // Check if the incoming origin is in the allowedOrigins list
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
