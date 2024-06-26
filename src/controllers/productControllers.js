@@ -362,7 +362,7 @@ const updateProduct = async (req, res) => {
           price_usd: price_usd ? Number(price_usd) : findItem.price_usd,
           desc_vi: desc_vi || findItem.desc_vi,
           desc_en: desc_en || findItem.desc_en,
-          category_id: category_id || findItem.category_id,
+          category_id: category_id ? Number(category_id) : findItem.category_id,
           deleted: deleted ? JSON.parse(deleted) : findItem.deleted,
         },
       });
