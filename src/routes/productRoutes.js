@@ -30,5 +30,5 @@ productRoutes.post('/create-product',storage.array('file'),createProduct);
 productRoutes.put('/delete-product/:product_id',deleteProduct);
 
 // update product
-productRoutes.put('/update-product/',updateProduct);
+productRoutes.put('/update-product/',storage.array('file'),updateProduct);
 export default productRoutes;

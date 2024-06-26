@@ -336,8 +336,15 @@ const deleteProduct = async (req,res) => {
   }
 };
 const updateProduct = async (req,res) => {
-  // let { token } = req.headers;
-  // checkToken(token);
+  
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).send("No files uploaded.");
+  }
+  console.log('req.files',req.files)
+  const imagePaths = req.files.map(file => file.path);
+ 
+
+
   try {
     let { product_id,name,price_vnd,price_usd,desc_vi,desc_en,category_id,deleted } = req.body;
 
@@ -353,14 +360,31 @@ const updateProduct = async (req,res) => {
         },
         data: {
           name: name || findItem.name,
-          price_vnd: price_vnd ? price_vnd : findItem.price_vnd,
-          price_usd: price_usd || findItem.price_usd,
+          price_vnd: price_vnd ? Number(price_vnd) : findItem.price_vnd,
+          price_usd: price_usd ? Number(price_usd) : findItem.price_usd,
           desc_vi: desc_vi || findItem.desc_vi,
           desc_en: desc_en || findItem.desc_en,
           category_id: category_id || findItem.category_id, 
           deleted: deleted ? JSON.parse(deleted) : findItem.deleted
         },
       });
+// xoá hình cũ
+
+      const deletedImages = await prisma.image.deleteMany({
+        where: {
+          product_id: Number(product_id),
+        },
+      });
+      // up hình mới
+      const newData = imagePaths.map(item => ({
+        product_id:Number(product_id),
+        img_link: item,
+      }));
+  
+      await prisma.image.createMany({
+        data: newData,
+      });
+
       res.send("You just update the product");
     } else {
       res.send("product not found");
