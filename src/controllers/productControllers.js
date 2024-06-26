@@ -335,24 +335,22 @@ const deleteProduct = async (req,res) => {
     res.status(500).send("Internal Server Error");
   }
 };
-const updateProduct = async (req,res) => {
+const updateProduct = async (req, res) => {
+  let imagePaths = [];
   
-  if (!req.files || req.files.length === 0) {
-    return res.status(400).send("No files uploaded.");
+  if (req.files && req.files.length > 0) {
+    imagePaths = req.files.map(file => file.path);
   }
-  console.log('req.files',req.files)
-  const imagePaths = req.files.map(file => file.path);
- 
-
 
   try {
-    let { product_id,name,price_vnd,price_usd,desc_vi,desc_en,category_id,deleted } = req.body;
+    let { product_id, name, price_vnd, price_usd, desc_vi, desc_en, category_id, deleted } = req.body;
 
     const findItem = await prisma.product.findUnique({
       where: {
         product_id: Number(product_id),
       },
     });
+
     if (findItem) {
       await prisma.product.update({
         where: {
@@ -364,30 +362,33 @@ const updateProduct = async (req,res) => {
           price_usd: price_usd ? Number(price_usd) : findItem.price_usd,
           desc_vi: desc_vi || findItem.desc_vi,
           desc_en: desc_en || findItem.desc_en,
-          category_id: category_id || findItem.category_id, 
-          deleted: deleted ? JSON.parse(deleted) : findItem.deleted
+          category_id: category_id || findItem.category_id,
+          deleted: deleted ? JSON.parse(deleted) : findItem.deleted,
         },
       });
-// xoá hình cũ
 
-      const deletedImages = await prisma.image.deleteMany({
-        where: {
+      if (imagePaths.length > 0) {
+        // Delete old images
+        await prisma.image.deleteMany({
+          where: {
+            product_id: Number(product_id),
+          },
+        });
+
+        // Upload new images
+        const newData = imagePaths.map(item => ({
           product_id: Number(product_id),
-        },
-      });
-      // up hình mới
-      const newData = imagePaths.map(item => ({
-        product_id:Number(product_id),
-        img_link: item,
-      }));
-  
-      await prisma.image.createMany({
-        data: newData,
-      });
+          img_link: item,
+        }));
 
-      res.send("You just update the product");
+        await prisma.image.createMany({
+          data: newData,
+        });
+      }
+
+      res.send("You just updated the product");
     } else {
-      res.send("product not found");
+      res.send("Product not found");
     }
   } catch (error) {
     console.error(`Backend error: ${error}`);
