@@ -69,17 +69,26 @@ const findProductByName = async (req, res) => {
   try {
    // let { keyword } = req.query;
     let { keyword, page, size } = req.query;
+
+   // Check if keyword is empty
+   if (!keyword || keyword.trim() === '') {
+    return res.status(400).send("Keyword cannot be empty");
+  }
+
     let num_page = Number(page);
     let num_size = Number(size);
     let index = (num_page - 1) * num_size;
+
     const products = await prisma.product.findMany({
       skip:index,
       take:num_size,
       where: {
+        deleted: false,
         name: {
           contains: keyword,
           mode: "insensitive", // case-insensitive search ( uppercase)
         }
+        
       },
       
       include: {
