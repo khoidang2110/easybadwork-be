@@ -97,10 +97,16 @@ const findProductByName = async (req, res) => {
         stock: true, // Include related category information
       },
     });
-    if (products.length === 0) {
+
+    const filteredProducts = products.filter(product => {
+      const hasStock = product.stock && product.stock.some(item => item.stock > 0);
+      return hasStock;
+    });
+
+    if (filteredProducts.length === 0) {
       res.send("No products found");
     } else {
-      const getProducts = products.map((product) => ({
+      const getProducts = filteredProducts.map((product) => ({
         product_id: product.product_id , // Ensure the field name matches the response
         name: product.name,
         price_vnd: product.price_vnd * 1,

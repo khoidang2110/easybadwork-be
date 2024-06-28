@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import sendMail from '../config/sendmail.js';
 //import sendMail from '../config/sendmail.js'
 
 const prisma = new PrismaClient();
@@ -156,4 +157,31 @@ const getUser = async (req, res) => {
       res.send(`BE error ${error}`);
     }
   };
-export { signUp, login, updateUser ,getUser};
+
+  // khach hang gui mail lien he
+  const contactUs = async (req,res)=>{
+try {
+  let { email, title, content } = req.body;
+
+  if (email){
+    // gửi mail shop
+    await sendMail({
+      // gui mail phan hoi 
+     email: 'easybadwork@gmail.com',
+      //email: 'khoidang2110@gmail.com',
+     subject:`Bạn có mail của khách hàng`,
+     html: `<h1>Email: ${email} </h1>
+     <h1> Tiêu đề: ${title}</h1>
+     <h1>Nội dung: ${content} </h1> `
+   })
+   // gửi mail khách hàng
+
+   res.send(`${title}`);
+ }
+
+} catch (error) {
+  res.send(`BE error ${error}`);
+}
+  }
+
+export { signUp, login, updateUser ,getUser,contactUs};
